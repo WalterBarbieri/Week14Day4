@@ -57,14 +57,19 @@ public class App {
 		List<Order> orders = genRandomOrders(products, customers);
 		orders.forEach(ord -> {
 			log.info(ord.toString());
-//			for (int i = 0; i < 10; i++) {
-//				Product product = products.stream().filter(prod -> prod.getCategory().equals("Baby")).get(i);
-//				log.info("Prod. Category: " + product.getCategory() + " Name: " + product.getName() + " Price: "
-//						+ product.getPrice() + "€");
-//			}
-			;
 		});
 
+		log.info("################################################################");
+		log.info("------------------------Lista Boys + 10% Discount----------------------");
+
+		List<Product> boysProducts = products.stream().filter(prod -> prod.getCategory().equals("Boys"))
+				.collect(Collectors.toList());
+
+		boysProducts
+				.forEach(el -> log.info(el.getCategory() + " : " + el.getName() + " " + (el.getPrice() * 0.9) + "€"));
+
+		log.info("################################################################");
+		log.info("------------------------Lista Prodotti Ordinati da clienti tier 2 con data----------------------");
 	}
 
 	private static List<Order> genRandomOrders(List<Product> products, List<Customer> customers) {
@@ -78,15 +83,18 @@ public class App {
 		List<Product> babyProducts = products.stream().filter(prod -> prod.getCategory().equals("Baby"))
 				.collect(Collectors.toList());
 
+		int productListSize = babyProducts.size();
+
 		for (int i = 0; i < 10; i++) {
 			String status = statuses.get(rnd.nextInt(statuses.size()));
 			LocalDate orderDate = LocalDate.now();
 			LocalDate deliveryDate = orderDate.plusDays(rnd.nextInt(7) + 1);
 			Customer rndCustomer = customers.get(rnd.nextInt(customers.size()));
 
-//			List<Product> rndBabyProducts = babyProducts.subList(genRandomIndex(babyProducts),
-//					(genRandomIndex(babyProducts) + 10));
-			Order order = new Order(faker.random().nextLong(), status, orderDate, deliveryDate, babyProducts,
+			int startIndex = rnd.nextInt(productListSize - 5);
+			int endIndex = startIndex + 5;
+			List<Product> rndBabyProducts = babyProducts.subList(startIndex, endIndex);
+			Order order = new Order(faker.random().nextLong(), status, orderDate, deliveryDate, rndBabyProducts,
 					rndCustomer);
 			orders.add(order);
 		}
@@ -94,18 +102,4 @@ public class App {
 
 	}
 
-//	private static int genRandomIndex(List<Product> products) {
-//		Random rnd = new Random();
-//		if (products.size() > 10) {
-//			int rndIndex = rnd.nextInt(products.size() - 10);
-//			if (rndIndex >= 0) {
-//				return rndIndex;
-//			} else {
-//				return 0;
-//			}
-//
-//		} else
-//			return 0;
-//
-//	}
 }
