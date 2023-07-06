@@ -3,7 +3,11 @@ package esercizio;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class Order extends Abs {
+	static Logger log = LoggerFactory.getLogger(App.class);
 	String status;
 	LocalDate orderDate;
 	LocalDate deliveryDate;
@@ -59,6 +63,18 @@ public class Order extends Abs {
 
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("OrderID: ").append(id);
+		sb.append(", Status: ").append(status);
+		sb.append(", Data Ordine: ").append(orderDate);
+		sb.append(", Data Consegna: ").append(deliveryDate);
+		sb.append(", Cliente: ").append(customer.getName());
+		sb.append(", Prodotti: ").append(products.toString());
+		return sb.toString();
 	}
 
 }

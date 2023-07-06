@@ -25,4 +25,10 @@ public class Product extends Abs {
 	public void setPrice(Double price) {
 		this.price = price;
 	}
+
+	@Override
+	public String toString() {
+		return "[Category: " + category + ", Name: " + name + ", Price: " + price + "]";
+	}
+
 }

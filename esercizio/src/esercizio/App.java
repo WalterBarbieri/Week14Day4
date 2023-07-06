@@ -17,7 +17,7 @@ public class App {
 	public static void main(String[] args) {
 		Faker faker = new Faker();
 		Random rnd = new Random();
-		List<String> categories = List.of("Books", "Babys", "Boys");
+		List<String> categories = List.of("Books", "Baby", "Boys");
 
 		log.info("**********************Lista Prodotti Random*********************");
 		List<Product> products = new ArrayList<>();
@@ -55,9 +55,15 @@ public class App {
 		log.info("------------------------Lista Order Random----------------------");
 
 		List<Order> orders = genRandomOrders(products, customers);
-		orders.forEach(ord -> log.info("OrderID: " + ord.getId() + " Status: " + ord.getStatus() + " Data Ordine: "
-				+ ord.getOrderDate() + " Data Consegna: " + ord.getDeliveryDate() + " Cliente: " + ord.getCustomer()
-				+ " Prodotti: " + ord.getProducts()));
+		orders.forEach(ord -> {
+			log.info(ord.toString());
+//			for (int i = 0; i < 10; i++) {
+//				Product product = products.stream().filter(prod -> prod.getCategory().equals("Baby")).get(i);
+//				log.info("Prod. Category: " + product.getCategory() + " Name: " + product.getName() + " Price: "
+//						+ product.getPrice() + "€");
+//			}
+			;
+		});
 
 	}
 
