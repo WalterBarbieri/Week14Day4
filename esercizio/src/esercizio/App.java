@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -54,8 +55,8 @@ public class App {
 		log.info("################################################################");
 		log.info("------------------------Lista Order Random----------------------");
 
-		List<Order> orders = genRandomOrders(products, customers);
-		orders.forEach(ord -> {
+		List<Order> babyOrders = genRandomOrders(products, customers, "Baby");
+		babyOrders.forEach(ord -> {
 			log.info(ord.toString());
 		});
 
@@ -70,9 +71,19 @@ public class App {
 
 		log.info("################################################################");
 		log.info("------------------------Lista Prodotti Ordinati da clienti tier 2 con data----------------------");
+
+		Predicate<Order> timeRange = order -> order.getOrderDate().isAfter(LocalDate.of(2021, 2, 1))
+				&& order.getOrderDate().isBefore(LocalDate.of(2021, 4, 1));
+
+		List<Order> boysOrder = genRandomOrders(products, customers, "Boys").stream()
+				.filter(ord -> ord.getCustomer().getTier() == 2).filter(timeRange).collect(Collectors.toList());
+
+		boysOrder.forEach(ord -> {
+			log.info(ord.toString());
+		});
 	}
 
-	private static List<Order> genRandomOrders(List<Product> products, List<Customer> customers) {
+	private static List<Order> genRandomOrders(List<Product> products, List<Customer> customers, String category) {
 		Faker faker = new Faker();
 		Random rnd = new Random();
 
@@ -80,14 +91,14 @@ public class App {
 
 		List<String> statuses = List.of("Pending", "Ready", "Dispatched");
 
-		List<Product> babyProducts = products.stream().filter(prod -> prod.getCategory().equals("Baby"))
+		List<Product> babyProducts = products.stream().filter(prod -> prod.getCategory().equals(category))
 				.collect(Collectors.toList());
 
 		int productListSize = babyProducts.size();
 
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 50; i++) {
 			String status = statuses.get(rnd.nextInt(statuses.size()));
-			LocalDate orderDate = LocalDate.now();
+			LocalDate orderDate = LocalDate.of(2021, rnd.nextInt(12) + 1, rnd.nextInt(28) + 1);
 			LocalDate deliveryDate = orderDate.plusDays(rnd.nextInt(7) + 1);
 			Customer rndCustomer = customers.get(rnd.nextInt(customers.size()));
 

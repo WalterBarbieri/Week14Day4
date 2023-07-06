@@ -73,6 +73,7 @@ public class Order extends Abs {
 		sb.append(", Data Ordine: ").append(orderDate);
 		sb.append(", Data Consegna: ").append(deliveryDate);
 		sb.append(", Cliente: ").append(customer.getName());
+		sb.append(", Tier: ").append(customer.getTier());
 		sb.append(", Prodotti: ").append(products.toString());
 		return sb.toString();
 	}
